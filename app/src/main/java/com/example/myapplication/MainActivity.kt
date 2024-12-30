@@ -40,11 +40,11 @@ class MainActivity : AppCompatActivity() {
             cameraHandler.takePicture(
                 outputDirectory = outputDir,
                 onImageCaptured = { bitmap ->
-                    val result = imageClassifier.classifyImage(bitmap).joinToString("\n")
+                    val detections = imageClassifier.classifyImage(bitmap)
 
                     // 結果を保存
                     ImageRepository.imageBitmap = bitmap
-                    ImageRepository.inferenceResult = result
+                    ImageRepository.inferenceResult = detections
 
                     // 次のActivityへ遷移
                     val intent = Intent(this, ResultActivity::class.java)
