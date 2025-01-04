@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 
 
 class ImageDrawer {
@@ -28,6 +29,9 @@ class ImageDrawer {
             val top = detection.yMin * bitmap.height
             val right = detection.xMax * bitmap.width
             val bottom = detection.yMax * bitmap.height
+
+            // ログで描画内容を確認
+            Log.d("BoundingBox", "Drawing box: ($left, $top) to ($right, $bottom)")
 
             // バウンディングボックスを描画
             canvas.drawRect(left, top, right, bottom, paint)

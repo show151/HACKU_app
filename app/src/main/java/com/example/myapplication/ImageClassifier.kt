@@ -50,7 +50,7 @@ class ImageClassifier(private val context: Context) {
     }
 
     // 画像を分類し、整形された結果を返す
-    fun classifyImage(bitmap: Bitmap): List<String> {
+    fun classifyImage(bitmap: Bitmap): List<Detection> {
         // 1. 画像をリサイズ
         val resizedBitmap = resizeBitmap(bitmap, 640, 640)
 
@@ -69,16 +69,11 @@ class ImageClassifier(private val context: Context) {
         // 6. 推論結果を解析
         val detections = processOutput(outputBuffer)
 
-        // 7. 信頼度が 0.7 以上の結果のみフィルタリングし、信頼度順にソートし、重複クラスを排除
-        val filteredDetections = detections
+        // 7. 信頼度が 0.8 以上の結果のみフィルタリングし、信頼度順にソートし、重複クラスを排除
+        return detections
             .filter { it.confidence > 0.8f }          // 信頼度が 0.8 を超えるもののみ
             .sortedByDescending { it.confidence }    // 信頼度でソート
             .distinctBy { it.classLabel }            // クラスラベルで重複を排除
-
-        // 8. 結果を文字列リストとして返す
-        return filteredDetections.map { detection ->
-            "クラス: ${detection.classLabel}, 信頼度: ${detection.confidence}"
-        }
     }
 
     // 出力を解析して検出結果をリストに変換
@@ -110,7 +105,7 @@ class ImageClassifier(private val context: Context) {
             Log.d("Detection", "ラベル: ${labels.getOrNull(maxClassIndex)}, 信頼度: $confidence, スコア: $maxClassScore")
 
             // フィルタリング条件を緩和
-            if (confidence > 0.5f && maxClassScore > 0.5f) {
+            if (confidence > 0.7f && maxClassScore > 0.7f) {
                 val label = if (maxClassIndex in labels.indices) labels[maxClassIndex] else "Unknown"
                 detections.add(
                     Detection(
@@ -126,11 +121,7 @@ class ImageClassifier(private val context: Context) {
             }
         }
 
-        // ソートのみ適用
-        val sortedDetections = detections
-            .sortedByDescending { it.confidence }
-
-        return sortedDetections
+        return detections
     }
 
     // ユーティリティ: 画像をリサイズ
