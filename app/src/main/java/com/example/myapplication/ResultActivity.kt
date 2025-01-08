@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ResultMainBinding
 
@@ -25,40 +26,39 @@ class ResultActivity : AppCompatActivity() {
         val bitmap = ImageRepository.imageBitmap
         val detections = ImageRepository.inferenceResult
 
-        if (bitmap != null) {
-            if (!detections.isNullOrEmpty()) {
-                // バウンディングボックス付き画像を生成
-                val resultBitmap = imageDrawer.drawBoundingBoxes(bitmap, detections)
+        // レイアウト描画後に幅と高さを取得して処理を実行
+        binding.previewImageView.viewTreeObserver.addOnGlobalLayoutListener(object :
+            ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                binding.previewImageView.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
-                // 画像をリサイズ
-                val resizedBitmap = resizeBitmap(resultBitmap, 1080, 1920) // 必要に応じてサイズを調整
-                binding.previewImageView.setImageBitmap(resizedBitmap)
+                val viewWidth = binding.previewImageView.width
+                val viewHeight = binding.previewImageView.height
 
-                Log.d("ResultActivity", "Bitmap resized and displayed: ${resizedBitmap.width}x${resizedBitmap.height}")
-            } else {
-                // 推論結果がない場合は元の画像をリサイズして表示
-                val resizedBitmap = resizeBitmap(bitmap, 1080, 1920)
-                binding.previewImageView.setImageBitmap(resizedBitmap)
+                if (bitmap != null && detections != null && detections.isNotEmpty()) {
+                    // バウンディングボックス付き画像を生成
+                    val resultBitmap =
+                        imageDrawer.drawBoundingBoxes(bitmap, detections, viewWidth, viewHeight)
+                    binding.previewImageView.setImageBitmap(resultBitmap)
+                } else if (bitmap != null) {
+                    // 推論結果がない場合、元の画像を表示
+                    binding.previewImageView.setImageBitmap(bitmap)
+                } else {
+                    // 画像がない場合は代替画像を表示
+                    binding.previewImageView.setImageResource(R.drawable.placeholder_image)
+                }
             }
-        } else {
-            // 画像がない場合はプレースホルダー画像を表示
-            binding.previewImageView.setImageResource(R.drawable.placeholder_image)
-        }
+        })
 
         // 推論結果をテキストとして表示
-        val resultText = if (!detections.isNullOrEmpty()) {
-            detections.joinToString(separator = "\n") { detection ->
+        if (!detections.isNullOrEmpty()) {
+            val resultText = detections.joinToString(separator = "\n") { detection ->
                 "クラス: ${detection.classLabel}, 信頼度: ${String.format("%.2f", detection.confidence)}"
             }
+            binding.resultTextView.text = resultText
         } else {
-            "No results available"
+            binding.resultTextView.text = "No results available"
         }
-        binding.resultTextView.text = resultText
-    }
-
-    // 画像リサイズ関数
-    private fun resizeBitmap(bitmap: Bitmap, targetWidth: Int, targetHeight: Int): Bitmap {
-        return Bitmap.createScaledBitmap(bitmap, targetWidth, targetHeight, true)
     }
 }
 
