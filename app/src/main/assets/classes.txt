@@ -1,0 +1,26 @@
+monitor
+keyborad
+desk
+houseplants
+chair
+laptop
+ballpoint pen
+fan
+clock
+tissue
+trash can
+air conditionern
+air conditioner
+watch
+newspaper
+book
+calendar
+toilet
+remote control
+cardboard
+eraser
+mechanical pencil
+stapler
+pencil
+plastic bottle
+tree

@@ -18,10 +18,10 @@ class ImageClassifier(private val context: Context) {
 
     init {
         // モデルをロード
-        interpreter = loadModel("yolo11s-seg_float32.tflite")
+        interpreter = loadModel("test_float32.tflite")
 
         // ラベルをロード
-        labels = loadLabels("labels.txt")
+        labels = loadLabels("classes.txt")
     }
 
     // モデルをロードする

@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -63,5 +64,25 @@ class MainActivity : AppCompatActivity() {
             )
         }
     }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 10) { // 権限リクエストのコード (REQUEST_CODE_PERMISSIONS)
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 権限が許可された場合、カメラを起動
+                cameraHandler.startCamera(binding.viewFinder, this)
+            } else {
+                // 権限が拒否された場合
+                Toast.makeText(this, "カメラの権限が必要です", Toast.LENGTH_SHORT).show()
+                finish() // アプリを終了
+            }
+        }
+    }
+
 }
 
