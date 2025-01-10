@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="take_photo">Capture</string>
-    <string name="result">Result</string>
+    <string name="result">Result</string>"
     <string name="preview_image" />
+    <string name="decoration">Decoration</string>>
 </resources>

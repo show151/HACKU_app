@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+    <!-- スクロールするコンテンツをラップ -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <!-- プレビュー画像 -->
+            <ImageView
+                android:id="@+id/previewImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
+            <ImageView
+                android:id="@+id/stampImage2"
+                android:layout_width="130dp"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true" />
+
+            <ImageView
+                android:id="@+id/stampImage4"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                    android:id="@+id/stampImage1"
+                    android:layout_width="130dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:adjustViewBounds="true" />
+                <ImageView
+                    android:id="@+id/stampImage3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    android:adjustViewBounds="true" />
+            </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

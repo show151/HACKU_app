@@ -1,8 +1,7 @@
 package com.example.myapplication
 
-import android.graphics.Bitmap
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ResultMainBinding
@@ -53,11 +52,21 @@ class ResultActivity : AppCompatActivity() {
         // 推論結果をテキストとして表示
         if (!detections.isNullOrEmpty()) {
             val resultText = detections.joinToString(separator = "\n") { detection ->
-                "クラス: ${detection.classLabel}, 信頼度: ${String.format("%.2f", detection.confidence)}"
+                "クラス: ${detection.classLabel}, 信頼度: ${
+                    String.format(
+                        "%.2f",
+                        detection.confidence
+                    )
+                }"
             }
             binding.resultTextView.text = resultText
         } else {
             binding.resultTextView.text = "No results available"
+        }
+
+        binding.imageDecorationButton.setOnClickListener {
+            val intent = Intent(this, DecorationActivity::class.java)
+            startActivity(intent)
         }
     }
 }
