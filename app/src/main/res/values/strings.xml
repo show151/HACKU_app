@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
     <string name="take_photo">Capture</string>
-    <string name="result">Result</string>"
+    <string name="result">Result</string>
     <string name="preview_image" />
-    <string name="decoration">Decoration</string>>
+    <string name="decoration">Decoration</string>
+    <string name="translate">Translate</string>
+    <string name="recapture">Recapture</string>
+    <string name="translated">Translated</string>
 </resources>

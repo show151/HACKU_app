@@ -14,23 +14,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-    <!-- プレビュー画像 -->
             <ImageView
                 android:id="@+id/previewImageView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true" />
-            <ImageView
-                android:id="@+id/stampImage2"
-                android:layout_width="130dp"
-                android:layout_height="100dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true" />
 
             <ImageView
-                android:id="@+id/stampImage4"
-                android:layout_width="100dp"
+                android:id="@+id/stampImage2"
+                android:layout_width="109dp"
                 android:layout_height="100dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter" />
@@ -42,14 +35,29 @@
                     android:scaleType="fitCenter"
                     android:visibility="gone"
                     android:adjustViewBounds="true" />
-                <ImageView
-                    android:id="@+id/stampImage3"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    android:adjustViewBounds="true" />
-            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/stampImage3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:scaleType="fitCenter"
+                android:visibility="gone"
+                android:adjustViewBounds="true" />
+
+            <ImageView
+                android:id="@+id/stampImage4"
+                android:layout_width="109dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+            <Button
+                android:id="@+id/recapture_button"
+                android:layout_width="wrap_content"
+                android:layout_height="110dp"
+                android:elevation="2dp"
+                android:text="@string/recapture" />
+        </LinearLayout>
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

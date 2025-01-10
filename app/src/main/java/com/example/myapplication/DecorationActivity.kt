@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.MotionEvent
@@ -12,6 +14,7 @@ class DecorationActivity: AppCompatActivity() {
     private lateinit var imageDrawer: ImageDrawer
     private var touchCounter = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.decoration_main)
@@ -62,7 +65,21 @@ class DecorationActivity: AppCompatActivity() {
                 }
             }
                 true  // イベント処理済み
-            }
+        }
+
+        // 再撮影ボタンの処理
+        binding.recaptureButton.setOnClickListener {
+            navigateToMainActivity()
         }
     }
+
+    // MainActivity へ遷移するメソッド
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+        finish() // 結果画面を終了
+    }
+}
+
 

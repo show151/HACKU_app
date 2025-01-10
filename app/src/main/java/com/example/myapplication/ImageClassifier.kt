@@ -69,9 +69,9 @@ class ImageClassifier(private val context: Context) {
         // 6. 推論結果を解析
         val detections = processOutput(outputBuffer)
 
-        // 7. 信頼度が 0.8 以上の結果のみフィルタリングし、信頼度順にソートし、重複クラスを排除
+        // 7. 信頼度が 0.75 以上の結果のみフィルタリングし、信頼度順にソートし、重複クラスを排除
         return detections
-            .filter { it.confidence > 0.8f }          // 信頼度が 0.8 を超えるもののみ
+            .filter { it.confidence > 0.75f }          // 信頼度が 0.75 を超えるもののみ
             .sortedByDescending { it.confidence }    // 信頼度でソート
             .distinctBy { it.classLabel }            // クラスラベルで重複を排除
     }
@@ -105,7 +105,7 @@ class ImageClassifier(private val context: Context) {
             Log.d("Detection", "ラベル: ${labels.getOrNull(maxClassIndex)}, 信頼度: $confidence, スコア: $maxClassScore")
 
             // フィルタリング条件を緩和
-            if (confidence > 0.7f && maxClassScore > 0.7f) {
+            if (confidence > 0.6f && maxClassScore > 0.6f) {
                 val label = if (maxClassIndex in labels.indices) labels[maxClassIndex] else "Unknown"
                 detections.add(
                     Detection(

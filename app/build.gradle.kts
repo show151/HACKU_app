@@ -38,9 +38,20 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding = true
     }
+    packaging {
+        resources {
+            // META-INF/INDEX.LISTを除外
+            excludes += listOf("META-INF/INDEX.LIST")
+            excludes += listOf("META-INF/DEPENDENCIES")
+        }
+    }
 }
 
 dependencies {
+
+    //google cloud
+    implementation(libs.google.google.auth.library.oauth2.http)
+    implementation(libs.google.cloud.translate)
 
     // cameraX
     implementation(libs.androidx.camera.core)
