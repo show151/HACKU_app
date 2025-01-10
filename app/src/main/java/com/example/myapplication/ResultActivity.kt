@@ -84,7 +84,7 @@ class ResultActivity : AppCompatActivity() {
         // 翻訳ボタンのクリックイベント
         binding.translateButton.setOnClickListener {
             val originalText = detections!!.joinToString("\n") { detection ->
-                "クラス: ${detection.classLabel}, 信頼度: ${String.format("%.2f", detection.confidence)}"
+                detection.classLabel
             }
             Log.d("ResultActivity", "Original text for translation: $originalText")
             if (originalText.isNotEmpty()) {
