@@ -18,7 +18,7 @@ class ImageClassifier(private val context: Context) {
 
     init {
         // モデルをロード
-        interpreter = loadModel("test_float32.tflite")
+        interpreter = loadModel("hackumodel_float32.tflite")
 
         // ラベルをロード
         labels = loadLabels("classes.txt")

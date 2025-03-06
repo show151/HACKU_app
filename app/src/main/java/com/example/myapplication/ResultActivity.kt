@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.ResultMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,8 +17,8 @@ import kotlinx.coroutines.withContext
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ResultMainBinding
-    private lateinit var imageDrawer: ImageDrawer // 描画クラスのインスタンス
     private lateinit var translator: Translator
+    private lateinit var imageDrawer: ImageDrawer
 
     @SuppressLint("DefaultLocale")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,15 +62,11 @@ class ResultActivity : AppCompatActivity() {
             }
         })
 
-        // 推論結果をテキストとして表示
+        // 推論結果の表示
         if (!detections.isNullOrEmpty()) {
-            val resultText = detections.joinToString(separator = "\n") { detection ->
-                "クラス: ${detection.classLabel}, 信頼度: ${
-                    String.format(
-                        "%.2f",
-                        detection.confidence
-                    )
-                }"
+            // 翻訳前のテキストを作成
+            val resultText = detections.joinToString("\n") { detection ->
+                "クラス: ${detection.classLabel}, 信頼度: ${String.format("%.2f", detection.confidence)}"
             }
             binding.resultTextView.text = resultText
         } else {
@@ -83,14 +80,10 @@ class ResultActivity : AppCompatActivity() {
 
         // 翻訳ボタンのクリックイベント
         binding.translateButton.setOnClickListener {
-            val originalText = detections!!.joinToString("\n") { detection ->
-                detection.classLabel
-            }
-            Log.d("ResultActivity", "Original text for translation: $originalText")
-            if (originalText.isNotEmpty()) {
-                translateSafely(originalText)
+            if (!detections.isNullOrEmpty()) {
+                translateDetections(detections)
             } else {
-                Toast.makeText(this, "翻訳するテキストがありません", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "翻訳する推論結果がありません", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -108,30 +101,22 @@ class ResultActivity : AppCompatActivity() {
         finish() // 結果画面を終了
     }
 
-    private fun translateSafely(text: String) {
+    private fun translateDetections(detections: List<ImageClassifier.Detection>) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
+                // 各推論結果を翻訳
                 val translatedText = withContext(Dispatchers.IO) {
-                    translator.translate(text)
+                    detections.joinToString("\n") { detection ->
+                        val textToTranslate = detection.classLabel
+                        translator.translate(textToTranslate) ?: textToTranslate
+                    }
                 }
-                if (translatedText != null) {
-                    binding.translatedTextView.text = translatedText
-                    Log.d("ResultActivity", "Translated text: $translatedText")
-                    Toast.makeText(this@ResultActivity, "翻訳が完了しました", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this@ResultActivity, "翻訳に失敗しました", Toast.LENGTH_SHORT).show()
-                }
+
+                // 翻訳後の結果を表示
+                binding.translatedTextView.text = translatedText
+                Toast.makeText(this@ResultActivity, "翻訳が完了しました", Toast.LENGTH_SHORT).show()
             } catch (e: Exception) {
-                Log.e("ResultActivity", "Translation failed", e)
-                if (e.message?.contains("Rate Limit") == true) {
-                    Toast.makeText(
-                        this@ResultActivity,
-                        "リクエストが制限を超えました。後ほど再試行してください。",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(this@ResultActivity, "翻訳エラー: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this@ResultActivity, "翻訳に失敗しました: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }
