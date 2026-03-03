@@ -1,15 +1,14 @@
+text:C:/Users/show5/HACKU_app/.gitignore
+# Android Studio / IntelliJ
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
+/.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
+
+# Secrets (Google Cloud Service Account Keys, etc.)
+app/src/main/assets/*.json
